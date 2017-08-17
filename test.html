@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Facebook Product Feed</title>
+    
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    
+</head>
+<body>
+    <div id="app" style="margin-top : 20px;">
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">Fanprint Export Product Feed</div>
+                <div class="panel-body center">
+                <!--Header   -->
+                  <div class="row">
+                    <div class="col-md-3 col-sm-12">
+                        <label>Chọn giải</label>
+                        <select v-model="parent_id" class="form-control" @change="changeParent()">
+                        <!-- <option disabled value="">Please select one</option> -->
+                        <option v-for="parentCate in parentCates" :value="parentCate.id">{{parentCate.name}}</option>
+                        </select>                
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <label>Chọn đội</label>
+                        <select v-model="child_id" class="form-control">
+                            <option v-for="child in childCates" :value="child.id" >{{child.name}}</option>
+                        </select>
+                    </div>                    
+                  </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+<script>
+    const app = new Vue({
+        el : "#app",
+        data : {
+            parentCates : [],
+            childCates : [],
+            parent_id : '',
+            child_id : '',
+            tmp : [],
+        },
+        mounted : function (){
+            this.fetchParentCate();
+        },
+        methods : {
+            fetchParentCate : function(){
+                axios.get("https://api.github.com/users/phunm-uet/repos")
+                .then(res => {
+                    this.parentCates = res.data;
+                })
+                .catch(err => {
+                    alert("Có lỗi xảy ra");
+                })
+            },
+
+            changeParent : function(){
+                axios.get("https://api.github.com/users/phunm-uet/repos")
+                .then(res => {
+                    this.childCates = res.data;
+                })
+                .catch(err => {
+                    alert("Có lỗi xảy ra");
+                })
+            },
+
+            changeChild : function(){
+
+            }
+        }
+    })
+</script>
+</html>
